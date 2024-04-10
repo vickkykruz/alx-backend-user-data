@@ -6,6 +6,8 @@ the log message obfuscated:
 
 import re
 from typing import List
+import logging
+import os
 
 
 def filter_datum(fields: List[str],
