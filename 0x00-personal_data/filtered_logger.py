@@ -70,3 +70,27 @@ def get_db() -> connection.MySQLConnection:
                                       password=db_password,
                                       host=db_host,
                                       database=db_name)
+
+
+def main() -> None:
+    """
+        This function retrieve all rows in the users table and display
+        each row under a filtered format
+    """
+    logger = get_logger()
+    db_conn = get_db()
+    cursor = db_conn.cursor()
+    cursor.execute("SELECT * FROM users;")
+
+    fields = [i[0] for i in cursor.description]
+    for row in cursor.fetchall():
+        message = '; '.join(f'{fields[idx]}={row[idx]}'
+                            for idx in range(len(fields)))
+        logger.info(message)
+
+    cursor.close()
+    db_conn.close()
+
+
+if __name__ == "__main__":
+    main()
