@@ -1,0 +1,11 @@
+#!/usr/bin/env python3
+"""
+This is a module that handle the authenication of every user
+"""
+
+from flask import request
+from typing import List, TypeVar
+
+
+class Auth:
+    """ This is a class that handle the user Authenication """
