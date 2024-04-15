@@ -7,8 +7,15 @@ from api.v1.views import app_views
 
 @app_views.route('/unauthorized', strict_slashes=False,  methods=['GET'])
 def unauthorized_endpoint() -> str:
-    """ This is a function the return an unauthozed access """
+    """ This is a function the return an unauthozed endpoint """
     abort(401)
+
+
+@app_views.route('/api/v1/forbidden', methods=['GET'])
+def forbidden_endpoint() -> str:
+    """ This is a function that return the forbidden
+    endpoint """
+    abort(403)
 
 
 @app_views.route('/status', methods=['GET'], strict_slashes=False)

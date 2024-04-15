@@ -29,6 +29,14 @@ def unauthorized(error) -> str:
     return response
 
 
+@app.errorhandler(403)
+def forbidden(error) -> str:
+    """ This is a function that handle forbidden error """
+    response = jsonify({"error": "Forbidden"})
+    response.status_code = 403
+    return response
+
+
 if __name__ == "__main__":
     host = getenv("API_HOST", "0.0.0.0")
     port = getenv("API_PORT", "5000")
