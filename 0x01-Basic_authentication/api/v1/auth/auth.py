@@ -14,31 +14,22 @@ class Auth:
         """
         Check if authentication is required for the given path.
         """
-        if path is None:
+        if path is None or excluded_paths is None or not len(excluded_paths):
             return True
-
-        if excluded_paths is None or not excluded_paths:
-            return True
-
-        if path.endswith('/'):
-            path = path[:-1]
-
-        for excluded_path in excluded_paths:
-            if excluded_path.endswith("*") and path.startswith(
-                    excluded_path[:-1]):
-                return False
-            elif path == excluded_path:
-                return False
-
-        return True
+        if path[-1] != '/':
+            path += '/'
+        for p in excluded_paths:
+            if p.endswith('*'):
+                if path.startswith(p[:1]):
+                    return False
+        return False if path in excluded_paths else True
 
     def authorization_header(self, request=None) -> str:
         """
         Get the Authorization header from the request.
         """
-        if request is None or 'Authorization' not in request.headers:
-            return None
-        return request.headers['Authorization']
+        if request:
+            return request.headers.get('Authorization')
 
     def current_user(self, request=None) -> TypeVar('User'):
         """

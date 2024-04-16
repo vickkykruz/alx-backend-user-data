@@ -11,7 +11,7 @@ def unauthorized_endpoint() -> str:
     abort(401)
 
 
-@app_views.route('/forbidden', methods=['GET'])
+@app_views.route('/forbidden', methods=['GET'], strict_slashes=False)
 def forbidden_endpoint() -> str:
     """ This is a function that return the forbidden
     endpoint """
