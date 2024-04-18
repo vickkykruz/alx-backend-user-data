@@ -5,6 +5,7 @@ This is a module that handle the authenication of every user
 
 from flask import request
 from typing import List, TypeVar
+from os import getenv
 
 
 class Auth:
@@ -36,3 +37,9 @@ class Auth:
         Get the current user based on the request.
         """
         return None
+
+    def session_cookie(self, request=None):
+        """ This is a  method that return a cookie value from a request
+        """
+        if request:
+            return request.cookies.get(getenv('SESSION_NAME'))
