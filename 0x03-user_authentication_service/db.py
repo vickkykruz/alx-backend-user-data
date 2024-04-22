@@ -8,6 +8,8 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
 from user import Base, User
+from sqlalchemy.orm.exc import NoResultFound
+from sqlalchemy.exc import InvalidRequestError
 
 
 class DB:
@@ -41,7 +43,6 @@ class DB:
         Returns:
             User object representing the newly added user
         """
-
         user = User(email=email, hashed_password=hashed_password)
         try:
             self._session.add(user)
@@ -51,3 +52,25 @@ class DB:
             # Handle IntegrityError, such as duplicate email
             self._session.rollback()
             raise
+
+    def find_user_by(self, **kwargs) -> User:
+        """Find a user in the database based on the provided keyword
+        arguments
+
+        Args:
+            **kwargs: Arbitrary keyword arguments representing the query
+            criteria
+
+        Returns:
+            User object representing the found user
+
+        Raises:
+            NoResultFound: If no user is found based on the provided
+            criteria
+            InvalidRequestError: If the query arguments are invalid
+        """
+
+        user = self._session.query(User).filter_by(**kwargs).first()
+        if user is None:
+            raise NoResultFound
+        return user
