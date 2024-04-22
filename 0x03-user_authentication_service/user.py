@@ -2,11 +2,10 @@
 """ This is a module that create the users table """
 
 
-from sqlalchemy import create_engine, Column, Integer, String
+from sqlalchemy import Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 
 
-engine = create_engine('sqlite:///:memory:', echo=True)
 Base = declarative_base()
 
 
