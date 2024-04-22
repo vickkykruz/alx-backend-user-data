@@ -2,7 +2,10 @@
 """
 Main file
 """
-from user import User
+
+
+from auth import _hash_password
+"""from user import User
 from db import DB
 
 from sqlalchemy.exc import InvalidRequestError
@@ -10,6 +13,7 @@ from sqlalchemy.orm.exc import NoResultFound
 
 my_db = DB()
 print(User.__tablename__)
+"""
 
 """
 for column in User.__table__.columns:
@@ -39,6 +43,7 @@ except InvalidRequestError:
     print("Invalid")
 """
 
+"""
 email = 'test@test.com'
 hashed_password = "hashedPwd"
 
@@ -50,3 +55,6 @@ try:
     print("Password updated")
 except ValueError:
     print("Error")
+"""
+
+print(_hash_password("Hello Holberton"))
