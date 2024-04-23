@@ -42,12 +42,10 @@ class DB:
             User object representing the newly added user
         """
 
+        if not email or not hashed_password:
+            return
+
         user = User(email=email, hashed_password=hashed_password)
-        try:
-            self._session.add(user)
-            self._session.commit()
-            return user
-        except IntegrityError:
-            # Handle IntegrityError, such as duplicate email
-            self._session.rollback()
-            raise
+        self._session.add(user)
+        self._session.commit()
+        return user
