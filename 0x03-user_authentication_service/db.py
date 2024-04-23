@@ -70,10 +70,19 @@ class DB:
             InvalidRequestError: If the query arguments are invalid
         """
 
-        user = self._session.query(User).filter_by(**kwargs).first()
-        if user is None:
+        if not kwargs:
+            raise InvalidRequestError
+        valid_attrs = ['id', 'email',
+                       'hashed_password',
+                       'session_id', 'reset_token']
+        for key in kwargs.keys():
+            if key not in valid_attrs:
+                raise InvalidRequestError
+
+        try:
+            return self._session.query(User).filter_by(**kwargs).one()
+        except Exception:
             raise NoResultFound
-        return user
 
     def update_user(self, user_id: int, **kwargs) -> None:
         """Update a user in the database based on the provided user_id
