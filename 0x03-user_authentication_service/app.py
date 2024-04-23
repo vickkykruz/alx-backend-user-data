@@ -2,7 +2,8 @@
 """ This is a module that handle the Flask app """
 
 
-from flask import Flask, jsonify, request, make_response, abort
+from flask import Flask, jsonify, request, make_response, \
+    abort, redirect, url_for
 from auth import Auth
 
 app = Flask(__name__)
@@ -34,7 +35,7 @@ def register_user() -> str:
 
 @app.route('/sessions', methods=['POST'], strict_slashes=False)
 def login() -> str:
-    """ logs in a user """
+    """ This is a method that logs in a user """
     email = request.form.get('email')
     password = request.form.get('password')
 
@@ -45,6 +46,17 @@ def login() -> str:
     response = make_response({"email": email, "message": "logged in"})
     response.set_cookie('session_id', session_id)
     return response
+
+
+@app.route('/sessions', methods=['DELETE'], strict_slashes=False)
+def logout() -> str:
+    """ This is a method that logs out a user """
+    session_id = request.cookies.get('session_id')
+    user = AUTH.get_user_from_session_id(session_id)
+    if user:
+        AUTH.destroy_session(user.id)
+        return redirect(url_for('home'))
+    abort(403)
 
 
 if __name__ == "__main__":
